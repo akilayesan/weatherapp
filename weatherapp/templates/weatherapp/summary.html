@@ -5,12 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Weather Summary</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .forecast-card {
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .forecast-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.2) !important;
+        }
+    </style>
 </head>
 <body class="bg-light">
     <div class="container mt-5">
         <!-- Header -->
         <div class="text-center mb-5">
-            <h1 class="display-4 text-primary mb-4">Today Weather Condition</h1>
+            <h1 class="display-4 text-primary mb-4">Weather Dashboard</h1>
         </div>
 
         <!-- Search Form -->
@@ -30,11 +39,14 @@
             </div>
         </div>
 
-        <!-- Weather Display -->
-        {% if city %}
-        <div class="row justify-content-center">
+        <!-- Current Weather Display -->
+        {% if city and weather %}
+        <div class="row justify-content-center mb-5">
             <div class="col-md-8">
-                <div class="card shadow-lg">
+                <div class="card shadow-lg border-primary">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">Current Weather</h5>
+                    </div>
                     <div class="card-body">
                         <!-- City Name -->
                         <h2 class="card-title text-center mb-4 text-primary">{{ city }}</h2>
@@ -42,7 +54,7 @@
                         <!-- Weather Info Grid -->
                         <div class="row text-center mb-4">
                             <div class="col-md-12 mb-3">
-                                <img src="{{ weather.current.condition.icon }}" alt="Weather Icon" class="img-fluid" style="max-width: 100px;">
+                                <img src="https:{{ weather.current.condition.icon }}" alt="Weather Icon" class="img-fluid" style="max-width: 100px;">
                             </div>
                         </div>
 
@@ -88,6 +100,61 @@
                 </div>
             </div>
         </div>
+
+        <!-- Forecast Display -->
+        {% if forecast %}
+        <div class="row justify-content-center">
+            <div class="col-md-12">
+                <div class="mb-4">
+                    <h3 class="text-primary mb-4">3-Day Forecast</h3>
+                    <div class="row">
+                        {% for day in forecast.forecast.forecastday %}
+                        <div class="col-md-4 mb-4">
+                            <div class="card shadow-sm forecast-card h-100">
+                                <div class="card-header bg-light">
+                                    <h5 class="card-title mb-0">{{ day.date }}</h5>
+                                </div>
+                                <div class="card-body text-center">
+                                    <img src="https:{{ day.day.condition.icon }}" alt="Weather icon" class="mb-3" style="max-width: 80px;">
+                                    
+                                    <p class="text-muted mb-2">
+                                        <strong>{{ day.day.condition.text }}</strong>
+                                    </p>
+
+                                    <div class="row text-center mb-3">
+                                        <div class="col-6">
+                                            <p class="text-muted small mb-1">Max Temp</p>
+                                            <p class="text-danger"><strong>{{ day.day.maxtemp_c }}°C</strong></p>
+                                        </div>
+                                        <div class="col-6">
+                                            <p class="text-muted small mb-1">Min Temp</p>
+                                            <p class="text-info"><strong>{{ day.day.mintemp_c }}°C</strong></p>
+                                        </div>
+                                    </div>
+
+                                    <div class="row text-center small">
+                                        <div class="col-6">
+                                            <p class="text-muted mb-1">💧 Humidity</p>
+                                            <p><strong>{{ day.day.avghumidity }}%</strong></p>
+                                        </div>
+                                        <div class="col-6">
+                                            <p class="text-muted mb-1">💨 Wind</p>
+                                            <p><strong>{{ day.day.maxwind_kmh }} km/h</strong></p>
+                                        </div>
+                                    </div>
+
+                                    <hr>
+                                    <p class="text-muted small mb-0">🌧️ Rain Chance: <strong>{{ day.day.daily_chance_of_rain }}%</strong></p>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
         {% endif %}
     </div>
 
