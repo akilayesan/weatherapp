@@ -1,16 +1,96 @@
-<h1>Today Weather Condition is :</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Summary</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <div class="container mt-5">
+        <!-- Header -->
+        <div class="text-center mb-5">
+            <h1 class="display-4 text-primary mb-4">Today Weather Condition</h1>
+        </div>
 
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Get Weather</button>
-</form>
+        <!-- Search Form -->
+        <div class="row justify-content-center mb-5">
+            <div class="col-md-6">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <form method="post">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                {{ form.as_p }}
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">Get Weather</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-<h1>City : {{ city }}  </h1>
+        <!-- Weather Display -->
+        {% if city %}
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow-lg">
+                    <div class="card-body">
+                        <!-- City Name -->
+                        <h2 class="card-title text-center mb-4 text-primary">{{ city }}</h2>
 
-<img src="{{ weather.current.condition.icon }}" alt="Weather Icon">
-<h1>Temperature : {{ weather.current.temp_c }} °C </h1>
-<h1>Humidity : {{ weather.current.humidity }} % </h1>
-<h1>Wind : {{ weather.current.wind_kph }} kph </h1>
-<h1>Condition : {{ weather.current.condition.text }} </h1>
-<h1>Last Updated : {{ weather.current.last_updated }} </h1>
+                        <!-- Weather Info Grid -->
+                        <div class="row text-center mb-4">
+                            <div class="col-md-12 mb-3">
+                                <img src="{{ weather.current.condition.icon }}" alt="Weather Icon" class="img-fluid" style="max-width: 100px;">
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6 mb-3">
+                                <div class="p-3 bg-info bg-opacity-10 rounded">
+                                    <p class="text-muted mb-1">Temperature</p>
+                                    <h4 class="text-info">{{ weather.current.temp_c }} °C</h4>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="p-3 bg-warning bg-opacity-10 rounded">
+                                    <p class="text-muted mb-1">Humidity</p>
+                                    <h4 class="text-warning">{{ weather.current.humidity }} %</h4>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6 mb-3">
+                                <div class="p-3 bg-success bg-opacity-10 rounded">
+                                    <p class="text-muted mb-1">Wind Speed</p>
+                                    <h4 class="text-success">{{ weather.current.wind_kph }} kph</h4>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="p-3 bg-secondary bg-opacity-10 rounded">
+                                    <p class="text-muted mb-1">Condition</p>
+                                    <h4 class="text-secondary">{{ weather.current.condition.text }}</h4>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="p-3 bg-light rounded border">
+                                    <p class="text-muted mb-1">Last Updated</p>
+                                    <p class="text-dark">{{ weather.current.last_updated }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
