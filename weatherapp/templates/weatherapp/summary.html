@@ -1,0 +1,16 @@
+<h1>Today Weather Condition is :</h1>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Get Weather</button>
+</form>
+
+<h1>City : {{ city }}  </h1>
+
+<img src="{{ weather.current.condition.icon }}" alt="Weather Icon">
+<h1>Temperature : {{ weather.current.temp_c }} °C </h1>
+<h1>Humidity : {{ weather.current.humidity }} % </h1>
+<h1>Wind : {{ weather.current.wind_kph }} kph </h1>
+<h1>Condition : {{ weather.current.condition.text }} </h1>
+<h1>Last Updated : {{ weather.current.last_updated }} </h1>
